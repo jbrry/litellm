@@ -797,12 +797,12 @@ class Choices(OpenAIObject):
             if isinstance(message, Message):
                 params["message"] = message
             elif isinstance(message, dict):
+                # patch to add top_logprobs which causes errors when not present
+                for _dict in logprobs["content"]:
+                    _dict["top_logprobs"] = []
                 params["message"] = Message(**message)
         if logprobs is not None:
             if isinstance(logprobs, dict):
-                # patch to add top_logprobs which causes errors when not present
-                for dict in logprobs["content"]:
-                    dict["top_logprobs"] = []
                 params["logprobs"] = ChoiceLogprobs(**logprobs)
             else:
                 params["logprobs"] = logprobs
