@@ -1366,6 +1366,8 @@ class Choices(SafeAttributeModel, OpenAIObject):
                 params["message"] = Message(**dump)
         if logprobs is not None:
             if isinstance(logprobs, dict):
+                for x in logprobs['content']:
+                    x['top_logprobs'] = []
                 params["logprobs"] = ChoiceLogprobs(**logprobs)
             else:
                 params["logprobs"] = logprobs
